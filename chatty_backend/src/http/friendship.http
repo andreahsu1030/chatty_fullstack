@@ -1,0 +1,51 @@
+## 建立兩人關係
+POST http://localhost:3000/friendships
+Content-Type: application/json
+
+{
+  "requester": "67bc630c3ca366f9811a1bfe",
+  "recipient": "67bc62a53ca366f9811a1bee"
+}
+
+### options: 1. 找出現有好友 2.找出user的好友申請 3. 尋找兩人關係
+POST http://localhost:3000/friendships/search
+Content-Type: application/json
+
+{
+  "requester": "67b01f38c6d138bf55740b5f",
+  "recipient": "67b09b7f271c8f6ae1def111",
+  "options": 3
+}
+
+### options: 2.找出user的好友申請
+POST http://localhost:3000/friendships/search
+Content-Type: application/json
+
+{
+  "userId": "67bc62b13ca366f9811a1bf1",
+  "options": 2
+}
+
+### GET ALL
+GET http://localhost:3000/friendships
+
+
+
+### 檢查是否有關係表
+POST http://localhost:3000/friendships/check
+Content-Type: application/json
+
+{
+  "requester": "67b09b7f271c8f6ae1def111",
+  "recipient": "67b6d0ec5b5d592aa1f37516"
+}
+
+### 更改兩人狀態 ## 同樣的req reci會返回500
+Patch http://localhost:3000/friendships/status
+Content-Type: application/json
+
+{
+  "requester": "67bc632f3ca366f9811a1c04",
+  "recipient": "67bc62a53ca366f9811a1bee",
+  "status": "accept"
+}

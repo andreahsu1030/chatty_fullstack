@@ -1,0 +1,30 @@
+### get all
+GET http://localhost:3000/chats
+
+### del chat
+DELETE http://localhost:3000/chats/67c0466116ca5090ff48e091
+
+
+### create chat
+POST http://localhost:3000/chats
+Content-Type: application/json
+
+{
+  "participants": ["67bc632f3ca366f9811a1c04","67bc62a53ca366f9811a1bee"]
+}
+
+###find chat by participants
+POST http://localhost:3000/chats/search
+Content-Type: application/json
+
+{
+  "participants": ["67bc62a53ca366f9811a1bee", "67bc62bb3ca366f9811a1bf4"]
+}
+
+
+### find someone's chat
+GET http://localhost:3000/chats/67bc62a53ca366f9811a1bee
+
+
+### find chat by chatId
+GET http://localhost:3000/chats/search/67bc633d3ca366f9811a1c09

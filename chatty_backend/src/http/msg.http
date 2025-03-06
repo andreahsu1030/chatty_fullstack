@@ -1,0 +1,46 @@
+### get all
+GET http://localhost:3000/messages
+
+
+### create msg
+POST http://localhost:3000/messages
+Content-Type: application/json
+
+{
+  "chatId": "67bc670b654e54783c866fd4",
+  "sender": "67bc62a53ca366f9811a1bee",
+  "content": "lets picnic!"
+}
+
+
+### get preview msg
+POST http://localhost:3000/messages/preview
+Content-Type: application/json
+
+{
+  "chatIds": ["67bc670b654e54783c866fd4", "67bc6716654e54783c866fd7"]
+}
+
+### get msg by query
+POST http://localhost:3000/messages/search/
+Content-Type: application/json
+
+{
+  "chatId": "67bc6716654e54783c866fd7"
+}
+
+### get msg by chatId
+GET http://localhost:3000/messages/search/67c04f422a20fe8e444bd722
+
+
+### update status
+POST  http://localhost:3000/messages/status
+Content-Type: application/json
+
+{
+  "chatId": "67b7dd2e1aed92c5fe2c5006",
+  "read": false
+}
+
+### delete by id
+DELETE http://localhost:3000/messages/

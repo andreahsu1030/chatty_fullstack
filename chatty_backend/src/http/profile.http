@@ -1,0 +1,35 @@
+### getProfile
+GET http://localhost:3000/profiles/search/67bc62a53ca366f9811a1bee
+
+### create profile
+POST http://localhost:3000/profiles/create
+Content-Type: application/json
+
+{
+  "id": "67bc63893ca366f9811a1c15",
+  "nickname": "Andreaaaaa",
+  "bio": ""
+}
+
+### get all
+GET http://localhost:3000/profiles/all
+
+### Update profile
+PATCH http://localhost:3000/profiles
+Content-Type: application/json
+
+{
+  "id": "67b01f38c6d138bf55740b5f",
+  "nickname": "Andreaa",
+  "bio": "happy"
+}
+
+### Find Users (many)
+POST http://localhost:3000/profiles/batch
+Content-Type: application/json
+
+{
+  "users": ["67bc62b13ca366f9811a1bf1", "67bc62bb3ca366f9811a1bf4", "67bc63213ca366f9811a1c01", "67bc632f3ca366f9811a1c04"]
+}
+
+### delete 

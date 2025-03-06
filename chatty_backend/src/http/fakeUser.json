@@ -1,0 +1,73 @@
+[
+  {
+    "_id": "67bc62a53ca366f9811a1bee",
+    "username": "Lilian",
+    "password": "12341234"
+  },
+  {
+    "id": "67bc62b13ca366f9811a1bf1",
+    "username": "Andrew",
+    "password": "12341234"
+  },
+  
+  {
+    "username": "Ethan",
+    "password": "12341234",
+    "_id": "67bc62bb3ca366f9811a1bf4"
+  },
+   // accept
+  {
+    "_id": "67bc62c53ca366f9811a1bf7",
+    "username": "BBBrain",
+    "password": "skopdddal"
+  },
+
+  {
+    "_id": "67bc630c3ca366f9811a1bfe",
+    "username": "Noahh",
+    "password": "12341234"
+  },
+//pending
+  {
+    "chat_id": "67bc670b654e54783c866fd4",
+    "_id": "67bc63213ca366f9811a1c01",
+    "username": "Sophia",
+    "password": "12341234"
+  },
+
+  {
+    "chat_id": "67bc6716654e54783c866fd7",
+    "_id": "67bc632f3ca366f9811a1c04",
+    "username": "Liamm",
+    "password": "12341234"
+  },
+//chatroom+msg
+  {
+    "_id": "67bc633d3ca366f9811a1c09",
+    "username": "Emmaa",
+    "password": "12341234"
+  },
+
+  {
+    "_id": "67bc63483ca366f9811a1c0c",
+    "username": "Benjamin",
+    "password": "12341234"
+  },
+  //
+  {
+   
+    "_id": "67bc63553ca366f9811a1c0f",
+    "username": "Avaaaaa",
+    "password": "12341234"
+  },
+  {
+    "_id": "67bc63613ca366f9811a1c12",
+    "username": "Jamess",
+    "password": "12341234"
+  },
+  {
+    "_id": "67bc63893ca366f9811a1c15",
+    "username": "Andreaaaaa",
+    "password": "12341234"
+  }
+]

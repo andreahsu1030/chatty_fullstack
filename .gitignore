@@ -1,0 +1,59 @@
+# 💻 OS / 編輯器產生的檔案
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 📦 依賴套件
+node_modules/
+dist/
+.build/
+.cache/
+.vscode/
+.idea/
+*.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# 🛠 NestJS (Backend)
+chatty_backend/dist/
+chatty_backend/.build/
+chatty_backend/.cache/
+chatty_backend/coverage/
+chatty_backend/logs/
+chatty_backend/tmp/
+chatty_backend/debug.log
+chatty_backend/dump.rdb
+chatty_backend/*.sqlite
+chatty_backend/database.sqlite
+
+# 🌍 React (Frontend)
+chatty_client/public/static/
+chatty_client/public/build/
+chatty_client/public/assets/
+chatty_client/coverage/
+chatty_client/.eslintcache
+chatty_client/.next/
+chatty_client/out/
+chatty_client/*.map
+
+# 🐳 Docker (如果有使用)
+docker-compose.override.yml
+.dockerignore
+
+# 📜 TypeScript
+*.d.ts
+*.tsbuildinfo
+
+# 🔧 Misc
+p!.github
+
+
