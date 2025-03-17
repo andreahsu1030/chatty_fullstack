@@ -36,6 +36,8 @@ export const ChatContext = createContext<ChatContextProps | undefined>(
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth()
   const [msgData, setMsgData] = useState<MessageData | null>(null)
+
+  if (!user) return
   const socket = io('http://localhost:3001', {
     auth: { userId: user?.id, username: user?.username }
   })
@@ -61,27 +63,25 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   })
 
   useEffect(() => {
-    if (!user || !msgData) return;
-  
+    if (!user || !msgData) return
+
     socket.emit('join', {
       userId: user.id,
       chatId: msgData.chatId,
-      username: user.username,
-    });
-  
+      username: user.username
+    })
+
     return () => {
-      socket.off('receiveMessage');
-      socket.disconnect();
-    };
-  }, [user, msgData?.chatId]); 
-  
+      socket.off('receiveMessage')
+      socket.disconnect()
+    }
+  }, [user, msgData?.chatId])
 
   const getChatViewData = async (
     chatId: string,
     recipientId: string,
     nickname: string,
-    avatar: string,
-
+    avatar: string
   ) => {
     setMsgData(null)
     try {
@@ -102,7 +102,6 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
       recipient: msgData.recipientId,
       content
     })
-
 
     setMsgData((prev) =>
       prev
