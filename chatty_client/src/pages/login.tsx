@@ -5,9 +5,8 @@ import { useAuth } from '../hooks/useAuth'
 export default function Login() {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [hasErr, setHasErr] = useState<boolean>(false)
   const navigate = useNavigate()
-  const { user, isLoading, login } = useAuth()
+  const { user, isLoading, login, setHasErr, hasErr, errMsg } = useAuth()
 
   useEffect(() => {
     if (user && !isLoading) {
@@ -18,7 +17,6 @@ export default function Login() {
   const handleLogin = async (username: string, password: string) => {
     try {
       await login(username, password)
-      setHasErr(false)
     } catch (err) {
       console.log('Auth', err)
       setHasErr(true)
@@ -42,7 +40,7 @@ export default function Login() {
           </h2>
           {hasErr && (
             <div className='bg-red-100 w-full p-2'>
-              <p className='text-red-500 text-center'>請輸入正確的帳號密碼。</p>
+              <p className='text-red-500 text-center'>{errMsg}</p>
             </div>
           )}
 

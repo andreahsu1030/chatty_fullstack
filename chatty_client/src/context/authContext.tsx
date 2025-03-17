@@ -11,6 +11,10 @@ interface AuthContextType {
   isLoading: boolean
   login: (username: string, password: string) => Promise<void>
   logout: () => void
+  setHasErr: React.Dispatch<React.SetStateAction<boolean>>
+  hasErr: boolean
+  setErrMsg: React.Dispatch<React.SetStateAction<string>>
+  errMsg: string
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -18,6 +22,8 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [hasErr, setHasErr] = useState<boolean>(false)
+  const [errMsg, setErrMsg] = useState<string>('')
 
   useEffect(() => {
     const checkUser = async () => {
@@ -40,15 +46,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       })
-
+      if (res.status === 404) {
+        setHasErr(true)
+        setErrMsg('請輸入正確的帳號密碼')
+        return
+      }
       if (!res.ok) {
-        throw new Error(`11, HTTP error! status: ${res.status}`)
+        setHasErr(true)
+        setErrMsg('連線問題：請稍後再試')
+        return
       }
       const data = await res.json()
       localStorage.setItem('token', data.access_token)
       setUser(await whosTheUser())
     } catch (err) {
-      console.error('Login err:', err)
+      setHasErr(true)
+      console.log(err)
       throw err
     }
   }
@@ -72,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem('token')
         return null
       }
-      
+
       return await res.json()
     } catch (err) {
       console.log('Auth: ', err)
@@ -86,7 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout, hasErr, setHasErr, errMsg, setErrMsg }}>
       {children}
     </AuthContext.Provider>
   )
