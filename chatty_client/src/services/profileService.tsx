@@ -3,16 +3,29 @@ import {
   API_PROFILE_POST_AVATAR,
   API_PROFILE_GET_USER,
   API_PROFILE_POST_USERS,
-  API_PROFILES_POST_CREATE
+  API_PROFILES_POST_CREATE,
+  API_PROFILE_POST_PROFILES
 } from '../config/api'
 import { FriendsProfileProps } from '../types/profileTypes'
+
+export const blurSearch = async (params: string) => {
+  try {
+    const res = await fetch(API_PROFILE_POST_PROFILES, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({params})
+    })
+    return await res.json()
+  } catch (err) {
+    console.log('blurSearch: ', err)
+  }
+}
 
 export const getUserProfile = async (userId: string) => {
   try {
     const res = await fetch(`${API_PROFILE_GET_USER}/${userId}`)
-    if(!res.ok){
-      console.log('user not found')
-    }
     return await res.json()
   } catch (err) {
     console.log('http err: ', err)
@@ -37,7 +50,7 @@ export const getUsersProfile = async (users: string[]) => {
     const usersProfile = result.map((user: FriendsProfileProps) => ({
       owner: user.owner,
       nickname: user.nickname,
-      status: user.bio,
+      bio: user.bio,
       avatar: user.avatar || ''
     }))
     return usersProfile

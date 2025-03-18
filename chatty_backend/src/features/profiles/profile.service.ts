@@ -57,6 +57,21 @@ export class ProfileService {
     }
   }
 
+  async findProfileByUsername(param: string) {
+    const profiles = await this.profileModel
+      .find({
+        nickname: { $regex: param, $options: 'i' },
+      })
+      .exec();
+
+    const data = profiles.map((i) => ({
+      owner: i.owner,
+      nickname: i.nickname,
+      avatar: i.avatar,
+    }));
+    return data;
+  }
+
   async updateProfile(dto: UpdateProfileDto) {
     const profile = await this.profileModel
       .findOneAndUpdate(

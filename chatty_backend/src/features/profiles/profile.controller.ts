@@ -54,13 +54,20 @@ export class ProfileController {
     return profile
   }
 
+  @Post('search')
+  @ApiOperation({ summary: '模糊搜尋用戶' })
+  async getProfileByUsername(@Body() body: {params: string}) {
+    return this.profileService.findProfileByUsername(body.params);
+  }
+
+
   @Patch()
   @ApiOperation({ summary: '更新Profile' })
   async updateProfile(@Body() dto: UpdateProfileDto) {
     const { id } = dto;
     const user = await this.usersService.findUserById({ _id: id });
-    // await this.profileService.findProfileById(String(user._id));
 
+    console.log('1',user)
     return this.profileService.updateProfile(dto);
   }
 
