@@ -15,15 +15,18 @@ export class FriendshipService {
   ) {}
 
   public async isExistFriendship(requester: string, recipient: string) {
+    const requesterId = new Types.ObjectId(requester);
+    const recipientId = new Types.ObjectId(recipient);
+
     const isExist = await this.friendshipModel
       .findOne({
         $or: [
-          { requester, recipient },
-          { requester: recipient, recipient: requester },
+          { requester: requesterId, recipient: recipientId },
+          { requester: recipientId, recipient: requesterId },
         ],
       })
       .exec();
-
+    console.log('isExist', isExist);
     return isExist;
   }
 
@@ -37,13 +40,13 @@ export class FriendshipService {
     const obj = {
       requester: new Types.ObjectId(requester),
       recipient: new Types.ObjectId(recipient),
-    }
+    };
     return this.friendshipModel.create(obj);
   }
 
   async findFriendshipsByQuery(query: object) {
-    const result =await  this.friendshipModel.find(query);
-    return result
+    const result = await this.friendshipModel.find(query);
+    return result;
   }
 
   async updateFriendshipStatus(query: Partial<Friendship>) {

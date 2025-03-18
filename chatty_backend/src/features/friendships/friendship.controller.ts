@@ -83,7 +83,7 @@ export class FriendshipController {
         status: 'pending',
       };
       const list = await this.friendshipService.findFriendshipsByQuery(obj);
-      if (list.length === 0) createResponse('success','', 'There is no data')
+      if (list.length === 0) createResponse('success', '', 'There is no data');
       const filteredArray = list.map((i) => i.requester);
       return createResponse('success', filteredArray, '');
     }
@@ -103,7 +103,7 @@ export class FriendshipController {
         ],
       };
       const result = await this.friendshipService.findFriendshipsByQuery(obj);
-      if (!result) return 
+      if (!result) return;
       return createResponse('success', result, '');
     }
     return;
@@ -134,9 +134,10 @@ export class FriendshipController {
 
     //判斷是否已建立 friendships
     const data = await this.friendshipService.isExistFriendship(
-      String(requester),
-      String(recipient),
+      requester,
+      recipient,
     );
+
     //如果沒有就創立並且更新狀態
     if (!data) {
       const newData = await this.friendshipService.createFriendships(
@@ -149,7 +150,7 @@ export class FriendshipController {
         status,
       });
       if (!result) return 'Err';
-      return '成功';
+      return createResponse('success', result, '');
     }
     //單純更改狀態
     const result = await this.friendshipService.updateFriendshipStatus({
@@ -158,6 +159,6 @@ export class FriendshipController {
       status,
     });
     if (!result) return 'Err';
-    return '成功';
+    return createResponse('success', result, '');
   }
 }
