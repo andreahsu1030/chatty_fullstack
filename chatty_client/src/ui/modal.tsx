@@ -41,7 +41,7 @@ export default function modal({
     <div className='fixed inset-0 bg-black/50 flex justify-center items-center z-50'>
       <div className='bg-white p-8 shadow-lg rounded-lg sm:w-96 space-y-5'>
         <h2 className='mb-6 text-center text-xl font-bold text-slate-700'>
-          Type your nickname
+          輸入您的暱稱
         </h2>
 
         {/* 暱稱輸入框 */}
@@ -57,7 +57,7 @@ export default function modal({
         </div>
         {hasErr && (
           <div className='text-xs text-red-600 font-semibold'>
-            Nickname cant be empty
+            暱稱不可為空
           </div>
         )}
         {/* 送出 */}
@@ -69,7 +69,7 @@ export default function modal({
               handleEditNickname(nickname)
             }}
           >
-            Send
+            送出
           </button>
         </div>
       </div>

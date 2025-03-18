@@ -11,6 +11,14 @@ export default function Register() {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if(username.length < 6) {
+      setHasErr("帳號至少六碼")
+      return
+    }
+    if(password.length < 8) {
+      setHasErr("密碼至少八碼")
+      return
+    }
     if (!username || !password || !confirmPassword) {
       setHasErr('請填寫所有欄位！')
       return

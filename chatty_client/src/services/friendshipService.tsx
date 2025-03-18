@@ -34,15 +34,13 @@ export const getFriendsReqList = async (userId: string) => {
       body: JSON.stringify(obj)
     })
     if (!res.ok) {
-      console.warn(`⚠️ API returned status ${res.status}`)
+      console.warn(`API returned status ${res.status}`)
     }
 
     const result = await res.json()
     if (result.data.length === 0) {
-      console.warn('No friend requests found.')
       return null
     }
-    console.log('service',result.data)
     return result.data
   } catch (err) {
     console.log('findRelation: ', err)
@@ -59,7 +57,7 @@ export const updateFriendshipsStatus = async (
     recipient,
     status
   }
-  console.log('2', obj)
+
   try {
     const res = await fetch(API_FRIENDSHIPS_PATCH_STATUS, {
       method: 'PATCH',
@@ -69,8 +67,9 @@ export const updateFriendshipsStatus = async (
       body: JSON.stringify(obj)
     })
 
-    const data = await res.json()
-    return data
+    const result = await res.json()
+    console.log(result)
+    return result.data
   } catch (err) {
     console.log('updateFriendshipsStatus ERR', err)
   }
