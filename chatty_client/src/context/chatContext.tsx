@@ -37,13 +37,11 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth()
   const [msgData, setMsgData] = useState<MessageData | null>(null)
 
-  if (!user) return
   const socket = io('http://localhost:3001', {
     auth: { userId: user?.id, username: user?.username }
   })
 
   socket.on('receiveMessage', (data) => {
-    console.log('📩 收到訊息:', data)
     setMsgData((prev) =>
       prev
         ? {

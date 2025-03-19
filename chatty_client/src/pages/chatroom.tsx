@@ -4,7 +4,6 @@ import useAuth from '../hooks/useAuth'
 import { getUserChatList } from '../services/chatService'
 import { getUsersProfile } from '../services/profileService'
 import { getPreviewMsg } from '../services/msgService'
-import Search from '../ui/search'
 import { timeFormat } from '../utils/dateFormate'
 import { ChatroomDataProps } from '../types/chatroomProps'
 import useChat from '../hooks/useChat'
@@ -84,7 +83,7 @@ export default function Chatroom() {
             (msg: { chatId: string; timestamp: string; content: string }) =>
               row.chatId === msg.chatId
           )
-          if (!matchedMsg?.content) return [] // ✅ 直接跳過沒有 `text` 的項目
+          if (!matchedMsg?.content) return [] 
           return {
             ...row,
             text: matchedMsg.content,
@@ -98,11 +97,13 @@ export default function Chatroom() {
   }
 
   return (
+    
     <div className=' bg-slate-50 px-4 h-screen'>
+      {/* {isLoading && <Loading />} */}
       <div className='pt-3 space-y-2 '>
-        <Search />
         {chatroomData? chatroomData.map((room) => (
           <div
+          className='cursor-pointer'
             key={room.chatId}
             onClick={() => {
               getChatViewData(room.chatId, '' ,room.nickname, room.avatar)
