@@ -7,13 +7,15 @@ import Card from '../ui/card'
 import Profile from '../ui/profile'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../ui/modal'
+import Loading from './loading'
 
 export interface ChildrenProps {
-  getChatViewData: (chatId:string) => void
+  getChatViewData: (chatId: string) => void
 }
 
 const FriendsList = () => {
   const [isModelShow, setIsModelShow] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [hoverProfile, setHoverProfile] = useState<FriendsProfileProps>({
     nickname: '',
     bio: '',
@@ -29,24 +31,31 @@ const FriendsList = () => {
     friends: []
   })
 
+
+
   const navigate = useNavigate()
 
   // 拿到登入者的個人資料
   const { user } = useAuth()
+
   useEffect(() => {
     if (!user) {
       navigate('/login')
     }
     if (user) {
       fetchUserProfile(user.id)
-      setUserProfile({ ...userProfile, id: user.id })
-      //拿到登入者的好友id []
-      fetchRelationship(user.id)
-      if (!userProfile.nickname) {
+      // setUserProfile({ ...userProfile, id: user.id })
+
+      if (userProfile.nickname === '') {
         setIsModelShow(true)
       }
+
+      //拿到登入者的好友id []
+      fetchRelationship(user.id)
+
       setIsModelShow(false)
     }
+    setIsLoading(false)
   }, [user])
 
   const fetchUserProfile = async (id: string) => {
@@ -56,13 +65,14 @@ const FriendsList = () => {
         setIsModelShow(true)
       }
       if (!res) return
-      setUserProfile((prev) => ({
-        ...prev,
+      setUserProfile({
+        ...userProfile,
         id: res.owner,
         nickname: res.nickname,
-        status: res.status,
-        avatar: res.avatar
-      }))
+        bio: res.bio,
+        avatar: res.avatar || user?.url
+      })
+
     } catch (err) {
       console.log('fetchUserProfile: ', err)
       return null
@@ -70,7 +80,6 @@ const FriendsList = () => {
   }
 
   //確認 userProfile
-
   const fetchRelationship = async (userId: string) => {
     const idList: string[] = await getFriendships(userId)
     if (idList.length > 0) {
@@ -86,10 +95,10 @@ const FriendsList = () => {
       friends: res
     }))
   }
-  
 
   return (
     <div className=' bg-slate-50 px-4 h-screen'>
+      {isLoading && <Loading />}
       {isModelShow && (
         <Modal
           setUserProfile={setUserProfile}
@@ -97,11 +106,11 @@ const FriendsList = () => {
           onClose={setIsModelShow}
         />
       )}
-      <div className='my-3'>
+      <div className='py-3'>
         <div
           onClick={() => {
             setHoverProfile({
-              owner: userProfile.id,
+              owner: user!.id,
               nickname: userProfile.nickname,
               bio: userProfile.bio,
               avatar: userProfile.avatar
@@ -121,6 +130,7 @@ const FriendsList = () => {
       <div className='border-t border-gray-200 pt-3 space-y-2 '>
         {userProfile.friends.map((friend) => (
           <div
+            className='cursor-pointer'
             key={friend.owner}
             onClick={() => {
               setHoverProfile(friend)
