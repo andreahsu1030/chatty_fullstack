@@ -4,10 +4,16 @@ import { API_AUTH_GET_USER, API_AUTH_POST_SIGNIN } from '../config/api'
 interface User {
   id: string
   username: string
+  nickname?: string
+  url?: string
+  bio?: string
 }
+
 
 interface AuthContextType {
   user: User | null
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
+  // setProfile: React.Dispatch<React.SetStateAction<Profile>>
   isLoading: boolean
   login: (username: string, password: string) => Promise<void>
   logout: () => void
@@ -99,7 +105,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout, hasErr, setHasErr, errMsg, setErrMsg }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        isLoading,
+        login,
+        logout,
+        hasErr,
+        setHasErr,
+        errMsg,
+        setErrMsg
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

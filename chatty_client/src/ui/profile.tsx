@@ -1,5 +1,5 @@
-import p1 from '../avators/p1.jpeg'
-import { useState, useRef } from 'react'
+import p1 from '../avatars/p1.jpeg'
+import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { uploadAvatar, updateProfile } from '../services/profileService'
 import { ProfileUserDataProps } from '../types/profileTypes'
@@ -13,7 +13,7 @@ export default function Profile({
   setIsProfileShow,
   setUserData
 }: ProfileUserDataProps) {
-  const { user } = useAuth()
+  const { user,setUser } = useAuth()
   const { getChatViewData } = useChat()
   const isMe = user?.id === userData.owner
 
@@ -32,6 +32,13 @@ export default function Profile({
     }
   }
 
+  useEffect(()=>{
+    if(userData.avatar === '') return
+
+  },[userData])
+
+
+
   // 上傳新頭像 (僅限本人)
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -40,7 +47,11 @@ export default function Profile({
     if (!file) return
     try {
       const res = await uploadAvatar(userData.owner, file)
+      if(!res || !user) return
       setUserData({ ...userData, avatar: res.fileUrl })
+      console.log('user',user)
+      setUser({...user, url: res.fileUrl})
+
     } catch (err) {
       console.error('上傳圖片失敗', err)
     }
@@ -58,7 +69,7 @@ export default function Profile({
       bio: enteredBio
     }
     const res = await updateProfile(data)
-    console.log(res)
+
     if (!res) {
       console.log('updateProfile err: ', res)
       return
@@ -199,9 +210,8 @@ export default function Profile({
         <button
           onClick={() => {
             handleOpenMsg()
-            
           }}
-          className='text-xs flex items-center  rounded-2xl py-1 px-3 border border-gray-300 transition hover:bg-gray-50 active:scale-95'
+          className='text-xs flex items-center  rounded-2xl py-1 px-3 border pt-1 border-gray-300 transition hover:bg-gray-50 active:scale-95'
         >
           <p className='text-gray-500 mr-1'>Chat</p>
           <ChatIcon size='20' color={'gray'} />

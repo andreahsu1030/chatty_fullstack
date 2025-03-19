@@ -3,14 +3,13 @@ import { useAuth } from '../hooks/useAuth'
 import { useChat } from '../hooks/useChat'
 import { timeFormat } from '../utils/dateFormate'
 import { others } from '../utils/icons'
-import { getUserProfile } from '../services/profileService'
+import p1 from '../avatars/p1.jpeg'
 
 export default function ChatView() {
   const SendIcon = others.send
   const { msgData, handleSendMsg } = useChat()
   const { user } = useAuth()
   const [enteredContent, setEnteredContent] = useState('')
-  const [userAvatar, setUserAvatar] = useState<string>('')
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -18,15 +17,6 @@ export default function ChatView() {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
     }
   }, [msgData])
-
-  useEffect(() => {
-    const getUserAvatar = async () => {
-      if (!user) return
-      const res = await getUserProfile(user.id)
-      setUserAvatar(res.avatar)
-    }
-    getUserAvatar()
-  }, [user])
 
   return (
     <div className='h-screen w-full p-5 flex flex-col'>
@@ -43,8 +33,8 @@ export default function ChatView() {
                   sender={i.sender === user?.id}
                   content={i.content}
                   timestamp={i.timestamp}
-                  recipientImg={msgData.avatar}
-                  senderImg={userAvatar}
+                  recipientImg={msgData.avatar || p1}
+                  senderImg={user?.url || p1}
                   read={i.read}
                 />
               </div>
