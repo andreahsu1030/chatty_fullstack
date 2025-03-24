@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./chatty_backend/Dockerfile
+    env_file:
+      - chatty_backend/.env
+    volumes:
+      - /app/node_modules
+    expose:
+      - '3000'
+    command: ['npm', 'run', 'start']
+
+  reverse-proxy:
+    image: nginx:latest
+    ports:
+      - 3000:3000
+    volumes:
+    - ./chatty_backend/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+
+  frontend-react-nginx:
+    build:
+      context: .
+      dockerfile: ./chatty_client/Dockerfile
+    env_file:
+      - chatty_client/.env
+    ports:
+      - '4000:80'
+    command: ['nginx', '-g', 'daemon off;']

@@ -12,12 +12,12 @@ async function bootstrap() {
   setupSwagger(app)
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:4000', 'http://localhost:5173'],
     credentials: true,
   });
 
   app.use('/upload', express.static(join(__dirname, '..', 'upload')));
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3000,'0.0.0.0');
 }
 
 function setupSwagger(app: INestApplication){
