@@ -46,7 +46,7 @@ export class UsersService {
       .exec();
 
     if (!user) {
-     throw new NotFoundException('Not Found User')
+     return createResponse('success', '1', 'User not found')
     }
     return user
   }

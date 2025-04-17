@@ -14,7 +14,7 @@ export interface ChildrenProps {
 }
 
 const FriendsList = () => {
-  const [isModelShow, setIsModelShow] = useState<boolean>(true)
+  const [isModelShow, setIsModelShow] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [hoverProfile, setHoverProfile] = useState<FriendsProfileProps>({
     nickname: '',
@@ -31,32 +31,39 @@ const FriendsList = () => {
     friends: []
   })
 
-
-
   const navigate = useNavigate()
 
   // 拿到登入者的個人資料
   const { user } = useAuth()
 
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate('/login')
+  //   }
+  //   if (user) {
+  //     fetchUserProfile(user.id)
+
+  //     //拿到登入者的好友id []
+  //     fetchRelationship(user.id)
+  //   }
+  //   // setIsLoading(false)
+  // }, [user])
+
   useEffect(() => {
-    if (!user) {
-      navigate('/login')
-    }
-    if (user) {
-      fetchUserProfile(user.id)
-      // setUserProfile({ ...userProfile, id: user.id })
-
-      if (userProfile.nickname === '') {
-        setIsModelShow(true)
+    const init = async () => {
+      if (!user) {
+        navigate('/login')
+        return
       }
-
-      //拿到登入者的好友id []
-      fetchRelationship(user.id)
-
-      setIsModelShow(false)
+  
+      await fetchUserProfile(user.id)
+      await fetchRelationship(user.id)
+      setIsLoading(false)
     }
-    setIsLoading(false)
+  
+    init()
   }, [user])
+  
 
   const fetchUserProfile = async (id: string) => {
     try {
@@ -72,6 +79,7 @@ const FriendsList = () => {
         bio: res.bio,
         avatar: res.avatar || user?.url
       })
+      console.log('aa: ',res.nickname)
 
     } catch (err) {
       console.log('fetchUserProfile: ', err)
@@ -79,7 +87,7 @@ const FriendsList = () => {
     }
   }
 
-  //確認 userProfile
+  //拿到登入者的好友
   const fetchRelationship = async (userId: string) => {
     const idList: string[] = await getFriendships(userId)
     if (idList.length > 0) {
@@ -92,12 +100,12 @@ const FriendsList = () => {
     const res = await getUsersProfile(ids)
     setUserProfile((prev) => ({
       ...prev,
-      friends: res
+      friends: res ||[]
     }))
   }
 
   return (
-    <div className=' bg-slate-50 px-4 h-screen'>
+    <div className=' bg-slate-50 px-4 h-screen overflow-y-auto'>
       {isLoading && <Loading />}
       {isModelShow && (
         <Modal

@@ -52,18 +52,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       })
-      if (res.status === 404) {
-        setHasErr(true)
-        setErrMsg('請輸入正確的帳號密碼')
-        return
-      }
+
       if (!res.ok) {
         setHasErr(true)
         setErrMsg('連線問題：請稍後再試')
         return
       }
-      const data = await res.json()
-      localStorage.setItem('token', data.access_token)
+      const result = await res.json()
+      console.log('authContext: ', result)
+      if(result.data === '1'){
+        setHasErr(true)
+        setErrMsg('請輸入正確帳號密碼')
+      }
+      localStorage.setItem('token', result.access_token)
       setUser(await whosTheUser())
     } catch (err) {
       setHasErr(true)

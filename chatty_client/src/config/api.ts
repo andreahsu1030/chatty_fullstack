@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000/api/'
+const BASE_URL = `http://localhost:3000/`
 
 // Signin
 export const API_AUTH_POST_SIGNIN = `${BASE_URL}auth/signin`

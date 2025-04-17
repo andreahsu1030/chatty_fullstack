@@ -41,6 +41,21 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     auth: { userId: user?.id, username: user?.username }
   })
 
+  useEffect(() => {
+    if (!user || !msgData) return
+
+    socket.emit('join', {
+      userId: user.id,
+      chatId: msgData.chatId,
+      username: user.username
+    })
+
+    return () => {
+      socket.off('receiveMessage')
+      socket.disconnect()
+    }
+  }, [user,msgData?.chatId])
+
   socket.on('receiveMessage', (data) => {
     setMsgData((prev) =>
       prev
@@ -60,21 +75,6 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     )
   })
 
-  useEffect(() => {
-    if (!user || !msgData) return
-
-    socket.emit('join', {
-      userId: user.id,
-      chatId: msgData.chatId,
-      username: user.username
-    })
-
-    return () => {
-      socket.off('receiveMessage')
-      socket.disconnect()
-    }
-  }, [user, msgData?.chatId])
-
   const getChatViewData = async (
     chatId: string,
     recipientId: string,
@@ -93,7 +93,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const handleSendMsg = (content: string) => {
     if (!msgData || !user) return
 
-    // 透過 Socket.IO 發送訊息
+    // 發送訊息
     socket.emit('sendMessage', {
       chatId: msgData.chatId,
       sender: user.id,
